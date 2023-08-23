@@ -1,4 +1,28 @@
-const CartPanelList = () => {
+import { useEffect } from "react";
+import CartPanelItem from "./CartPanelItem";
+
+// 從父層 CartPanel props 來
+const CartPanelList = ({
+  cartList,
+  handleRemoveItem,
+  updateCartList,
+  sum,
+  setSum,
+}) => {
+  // 當 cartList 或 setSum 發生變化時，該函式將會被觸發執行。
+  useEffect(() => {
+    // 使用 Array.prototype.reduce 計算購物車中所有項目的總金額。
+    // cartList 是購物車清單陣列，acc 是累計總金額。對於每個 cart 項目，如果它有 subtotal 屬性，就將 subtotal 加到總金額中，否則加上 price 屬性。
+    const totalPriceSum = cartList.reduce((acc, cart) => {
+      if (cart.subtotal) {
+        return acc + cart.subtotal;
+      }
+      return acc + cart.price;
+    }, 0);
+    // 使用 setSum 函式，將計算得到的總金額 totalPriceSum 賦值給 sum 狀態，從而更新購物車的總金額。
+    setSum(totalPriceSum);
+  }, [cartList, setSum]);
+
   return (
     <>
       <table className="table">
@@ -17,71 +41,19 @@ const CartPanelList = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <button type="button" className="btn btn-sm">
-                x
-              </button>
-            </td>
-            <td>四季春茶</td>
-            <td>
-              <small>香醇四季春茶，回甘無比</small>
-            </td>
-            {/* const array = Array.from({ length: 10}, (num, i) => i)
-// [0,1,2,3,4,5,6,7,8,9] */}
-            {/* <select>
-{array.map((a) => (
-<option value={a+1}>{a+1}</option>
-)) */}
-            <td>
-              <select className="form-select">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
-            </td>
-            <td>45</td>
-            <td>45</td>
-          </tr>
-          {/* <tr>
-            <td>
-              <button type="button" className="btn btn-sm">
-                x
-              </button>
-            </td>
-            <td>翡翠檸檬</td>
-            <td>
-              <small>綠茶與檸檬的完美結合</small>
-            </td>
-            <td>
-              <select className="form-select">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
-            </td>
-            <td>55</td>
-            <td>55</td>
-          </tr> */}
+          {cartList.map((cart, index) => (
+            <CartPanelItem
+              key={index}
+              cart={cart}
+              handleRemoveItem={handleRemoveItem}
+              updateCartList={updateCartList}
+            />
+          ))}
         </tbody>
       </table>
       <div className="text-end mb-3">
         <h5>
-          總計: <span>$100</span>
+          總計: <span>{`$${sum}`}</span>
         </h5>
       </div>
     </>
