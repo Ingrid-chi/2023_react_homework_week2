@@ -1,5 +1,7 @@
-const OrderPanel = () => {
-  return (
+import OrderPanelItem from "./OrderPanelItem";
+
+const OrderPanel = ({ sum, orderList }) => {
+  return orderList ? (
     <>
       <div className="card-title">
         <h5>訂單</h5>
@@ -12,33 +14,23 @@ const OrderPanel = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>翡翠檸檬</td>
-              <td>7</td>
-              <td>385</td>
-            </tr>
-            <tr>
-              <td>冬瓜檸檬</td>
-              <td>7</td>
-              <td>315</td>
-            </tr>
-            <tr>
-              <td>冬瓜檸檬</td>
-              <td>4</td>
-              <td>180</td>
-            </tr>
+            {orderList.orders.map((order, index) => (
+              <OrderPanelItem key={index} order={order} />
+            ))}
           </tbody>
         </table>
         <div className="text-end">
-          備註: <span>都不要香菜</span>
+          備註: <span>{orderList.remark}</span>
         </div>
         <div className="text-end">
           <h5>
-            總計: <span>$145</span>
+            總計: <span>{`$${sum}`}</span>
           </h5>
         </div>
       </div>
     </>
+  ) : (
+    "你還沒有加入訂單"
   );
 };
 export default OrderPanel;

@@ -2,9 +2,9 @@ import "./App.css";
 import "bootstrap/scss/bootstrap.scss";
 import { useState } from "react";
 import { SIDEBAR_MENU_DATA } from "./data/sidebarMenuData";
+import SidebarMenus from "./components/SidebarMenu";
 import CartPanel from "./containers/CartPanel";
 import OrderPanel from "./containers/OrderPanel";
-import SidebarMenus from "./components/SidebarMenu";
 
 function App() {
   const [clickMenuId, setClickMenuId] = useState(0);
